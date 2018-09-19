@@ -24,6 +24,7 @@ import { SideNavigationComponent } from './components/profile/side-navigation/si
 import { UserTaskComponent } from './components/profile/side-navigation/user-task/user-task.component';
 import { ConsolidatedTasksComponent } from './components/profile/side-navigation/consolidated-tasks/consolidated-tasks.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { AboutComponent } from './components/profile/side-navigation/about/about.component';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
     SideNavigationComponent,
     UserTaskComponent,    
     ConsolidatedTasksComponent, 
-    SpinnerComponent    
+    SpinnerComponent, 
+    AboutComponent
   ],
   imports: [
     BrowserModule,    

@@ -29,8 +29,11 @@
   background:#1e272e;
 }
 
-.logo {
-  border-radius: 100%;
+#logo {
+  list-style: none;
+  padding: 15px 10px;
+  color: white;
+  font-size: 50px;
   display: block;
-  margin: 0 auto;
+  text-align: center;
 }

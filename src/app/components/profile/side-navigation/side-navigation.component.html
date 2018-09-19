@@ -1,11 +1,11 @@
-<div id="sidebar" class="bg-dark">  
+<div id="sidebar" class="bg-dark">
   <ul>
     <li>
-      <img src="../../../assets/logo.png" alt="Logo..." class="logo">
+      <i id="logo" class="fas fa-address-card"></i>      
     </li>
     <li><a class="nav-link" [routerLink]="['task']" (click)="showMenu($event)">Tareas pendientes</a></li>
     <li><a class="nav-link" [routerLink]="['listTasks']" (click)="showMenu($event)">Consolidado de Tareas</a></li>
-    <!--li><a class="nav-link" [routerLink]="['about']" (click)="showMenu($event)">Acerca de la aplicación</a></li-->
-  </ul>  
+    <li><a class="nav-link" [routerLink]="['about']" (click)="showMenu($event)">Acerca de la aplicación</a></li>
+  </ul>
 </div>
 <router-outlet></router-outlet>
