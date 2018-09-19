@@ -1,0 +1,36 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+#sidebar {
+  position: fixed;
+  width: 200px;
+  height: 100%;  
+  left: -200px;  
+  top: 57px;
+  transition: all 0.30s linear;  
+  word-wrap: break-word;
+}
+
+#sidebar.active {
+  left: 0px;  
+}
+
+#sidebar ul li a{
+  color: rgba(230, 230, 230, 0.9);
+  list-style: none;
+  padding: 15px 10px;
+  border-bottom: 1px solid rgba(100, 100, 100, 0.3);
+  text-align: center;
+}
+
+
+#sidebar ul li a:hover{
+  background:#1e272e;
+}
+
+.logo {
+  border-radius: 100%;
+  display: block;
+  margin: 0 auto;
+}

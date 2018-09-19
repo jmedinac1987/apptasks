@@ -1,0 +1,30 @@
+<div class="row pt-5 justify-content-md-center">
+    <div id="form-card" class="pt-5 col-5">
+        <app-spinner *ngIf="showSpinner"></app-spinner>
+        <div *ngIf="!showSpinner" class="card">
+            <div class="card-header">
+                <h5>Restablecimiento de contraseña</h5>
+            </div>
+            <div class="card-body">
+                <form (ngSubmit)="onSubmit()" #requestResetForm="ngForm">
+                    <div class="alert alert-danger" [hidden]="!error">
+                        {{ error }}
+                    </div>
+                    <p class="text-justify">Ingrese su dirección de correo electrónico y le enviaremos un enlace para restablecer
+                        su contraseña.</p>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <input type="email" [(ngModel)]="form.email" name="email" class="form-control" id="email" placeholder="example@example.com"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <button type="submit" [disabled]="!requestResetForm.valid" class="btn btn-primary btn-block">Enviar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

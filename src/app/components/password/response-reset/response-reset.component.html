@@ -1,0 +1,40 @@
+<div class="row pt-5 justify-content-md-center">
+    <div id="form-card" class="pt-5 col-5">
+        <app-spinner *ngIf="showSpinner"></app-spinner>
+        <div *ngIf="!showSpinner" class="card">
+            <div class="card-header">
+                <h5>Cambiar la contraseña</h5>
+            </div>
+            <div class="card-body">
+                <form  (ngSubmit)="onSubmit()"  #responseResetForm="ngForm">                    
+                    <div class="alert alert-danger" *ngIf="form.password != form.password_confirmation">
+                        Contraseñas no coinciden                              
+                    </div>
+                    <div class="form-group row">                        
+                        <div class="col-sm-12">
+                            <label for="email">Email</label>
+                            <input type="email" [(ngModel)]="form.email" name="email" class="form-control" id="email" placeholder="example@example.com" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">                        
+                        <div class="col-sm-12">
+                            <label for="password">Nueva Contraseña</label>
+                            <input type="password" minlength="8" [(ngModel)]="form.password"  name="password" class="form-control" id="email" placeholder="Nueva contraseña" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">                        
+                        <div class="col-sm-12">
+                            <label for="password_confirm">Confirmar contraseña</label>
+                            <input type="password" minlength="8" [(ngModel)]="form.password_confirmation"  name="password_confirmation" class="form-control" id="password_confirm" placeholder="Confirmar contraseña" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <button type="submit" [disabled]="!responseResetForm.valid" class="btn btn-primary btn-block">Cambiar</button>                            
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

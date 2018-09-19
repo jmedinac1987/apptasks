@@ -1,0 +1,41 @@
+<div class="row pt-5 justify-content-md-center">
+    <div id="form-card" class="pt-5 col-5">
+        <app-spinner *ngIf="showSpinner"></app-spinner>
+        <div *ngIf="!showSpinner" class="card">
+            <div class="card-header">
+                <h5>Login</h5>
+            </div>            
+            <div class="card-body">
+                <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+                    <div class="alert alert-danger" [hidden]="!error">
+                        {{ error }}
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-4 col-form-label">Email</label>
+                        <div class="col-sm-8">
+                            <input type="email" [(ngModel)]="form.email" name="email" class="form-control" id="email" placeholder="example@example.com"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="password" class="col-sm-4 col-form-label">Contraseña</label>
+                        <div class="col-sm-8">
+                            <input type="password" [(ngModel)]="form.password" name="password" class="form-control" id="password" placeholder="contraseña"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <button type="submit" [disabled]="!loginForm.valid" class="btn btn-block btn-primary mt-1 mb-1">Iniciar
+                                sesión</button>
+                            <a [routerLink]="['/signup']" class="btn btn-block btn-info mt-1 mb-1">Crear cuenta</a>
+                            <small>
+                                <a [routerLink]="['/request-password-reset']" class="nav-link float-right">Olvidaste tu contraseña</a>
+                            </small>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

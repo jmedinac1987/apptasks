@@ -1,0 +1,156 @@
+<div class="pt-5">
+	<div class="pt-5 ml-3 mt-3">
+		<p class="lead text-muted">Tienes {{ number_tasks }} tarea(s) pendiente(s) </p>
+		<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalInsert">
+			Crear Tarea <i class="fas fa-tasks"></i>
+		</button>
+	</div>
+	<div class="pt-5 mt-5">
+		<div *ngIf="!length_tasks && !showSpinner" class="pt-3 text-center">
+			<h2>No tienes tareas pendientes :)</h2>
+		</div>
+	</div>
+	<div *ngIf="length_tasks && !showSpinner" class="pt-3">
+		<!-- paginación -->
+		<pagination-controls (pageChange)="p = $event"></pagination-controls>
+	</div>
+	<app-spinner *ngIf="showSpinner"></app-spinner>
+	<div *ngIf="length_tasks && !showSpinner" class="card-deck pt-3 pb-5">
+		<div class="col-md-4 pb-3 colPosition" *ngFor="let task of tasks | paginate: { itemsPerPage: 6, currentPage: p }">
+			<div class="card colPosition">
+				<div class="card-header">
+					{{ task.title | uppercase}}
+				</div>
+				<div class="card-body">
+					<li>Estado: {{ task.state}}</li>
+					<li><i class="far fa-calendar-alt"></i> Creada el: {{ task.date | date}}</li>
+					<li><i class="fas fa-user"></i> {{ task.userTask}}</li>
+					<br />
+					<p class="text-justify">{{ task.description }}</p>
+				</div>
+				<div class="card-footer">
+					<div class="btn-group colPosition">
+						<button class="btn btn-danger btn-sm colPosition" (click)="deleteTask(task)">
+							<i class="far fa-trash-alt"></i>
+						</button>
+						<button class="btn btn-secondary btn-sm colPosition" (click)="setTask(task)" data-toggle="modal" data-target="#modalEdit">
+							<i class="fas fa-edit"></i>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div *ngIf="length_tasks && !showSpinner" class="pt-3">
+		<!-- paginación -->
+		<pagination-controls (pageChange)="p = $event"></pagination-controls>
+	</div>
+</div>
+
+<!-- Ventana Modal para ingresar la tarea -->
+<div class="modal fade" id="modalInsert">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					Registrar Tarea
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					&times;
+				</button>
+			</div>
+			<div class="modal-body">
+				<form (ngSubmit)="onSubmit()" #taskPostForm="ngForm" method="POST">
+					<div class="form-group">
+						<input [(ngModel)]="task.title" minlength="3" maxlength="30" name="title" type="text" placeholder="Inserta el título de la tarea"
+						 class="form-control" required>
+					</div>
+					<fieldset class="form-group">
+						<div class="row">
+							<legend class="col-form-label col-sm-2 pt-0">Estado</legend>
+							<div class="col-sm-10">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="pendiente" [(ngModel)]="task.state"
+									 required>
+									<label class="form-check-label" for="gridRadios1">
+										Pendiente
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="realizado" [(ngModel)]="task.state"
+									 required>
+									<label class="form-check-label" for="gridRadios2">
+										Realizado
+									</label>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<div class="form-group">
+						<textarea minlength="3" maxlength="300" class="form-control" cols="30" name="content" placeholder="Escribe aquí la descripción de la tarea"
+						 [(ngModel)]="task.description" required rows="7">
+								</textarea>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" [disabled]="!taskPostForm.form.valid">Guardar</button>
+						<button class="btn btn-secondary" data-dismiss="modal" id="closeModal">Cancelar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Ventana Modal para editar la tarea -->
+<div class="modal fade" id="modalEdit">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">
+					Editar Tarea
+				</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					&times;
+				</button>
+			</div>
+			<div class="modal-body">
+				<form (ngSubmit)="onSubmitUpdate()" #taskPutForm="ngForm">
+					<div class="form-group">
+						<input [(ngModel)]="task_update.title" minlength="3" maxlength="30" name="title" type="text" placeholder="Inserta el título de la tarea"
+						 class="form-control" required>
+					</div>
+					<fieldset class="form-group">
+						<div class="row">
+							<legend class="col-form-label col-sm-2 pt-0">Estado</legend>
+							<div class="col-sm-10">
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="pendiente" [(ngModel)]="task_update.state"
+									 required>
+									<label class="form-check-label" for="gridRadios1">
+										Pendiente
+									</label>
+								</div>
+								<div class="form-check">
+									<input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="realizado" [(ngModel)]="task_update.state"
+									 required>
+									<label class="form-check-label" for="gridRadios2">
+										Realizado
+									</label>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<div class="form-group">
+						<textarea minlength="3" maxlength="300" class="form-control" cols="30" name="content" placeholder="Escribe aquí la descripción de la tarea"
+						 [(ngModel)]="task_update.description" required rows="7">
+								</textarea>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" [disabled]="!taskPutForm.form.valid">Editar</button>
+						<button class="btn btn-secondary" data-dismiss="modal" id="closeModalEdit">Cancelar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

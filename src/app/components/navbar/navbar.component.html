@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <div *ngIf="loggedIn" id="menuSideLeft" class="toggle-btn">
+            <span  class="mr-3"  (click)="showMenu($event)">
+                <i class="fas fa-bars"></i>
+            </span>
+        </div>
+        <a class="navbar-brand">
+            <span id="logo">App</span>
+            <span id="logo_2">Tasks</span>
+        </a>
+        <button id="togglerButtonNavHJ" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span *ngIf="!loggedIn" class="userNav"><i class="fas fa-bars"></i></span>
+            <span *ngIf="loggedIn" class="userNav"><i class="fas fa-user"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ml-auto">
+                <ul class="navbar-nav">
+                    <li routerLinkActive="active" class="nav-item" *ngIf="!loggedIn">
+                        <a class="nav-link" [routerLink]="['/login']" (click)="hideMenu()">LOGIN</a>
+                    </li>
+                    <li class="nav-item dropdown" *ngIf="loggedIn">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
+                            {{ user_name.udn | uppercase }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" [routerLink]="['/profile/task']" (click)="hideMenu()">Tareas Pendientes</a>
+                            <a class="dropdown-item" href="#" (click)="logout($event)">Cerrar Sesión</a>
+                            <a class="dropdown-item" href="#" (click)="closeAcount($event)">Cancelar Cuenta</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
