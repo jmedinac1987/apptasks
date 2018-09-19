@@ -1,4 +1,3 @@
-
 <div class="pt-5">
   <div class="pt-5 mt-5">
     <div *ngIf="!length_tasks" class="pt-3 text-center">
@@ -182,13 +181,15 @@
         </button>
       </div>
       <div class="modal-body">
-        <li>Estado: {{ task_update.state}}</li>
-        <li><i class="far fa-calendar-alt"></i> Creada el: {{ task_update.date | date}}</li>
-        <li *ngIf="task_update.endDate != null"><i class="far fa-calendar-alt"></i> Finalizada el: {{ task_update.endDate
-          | date}}</li>
-        <li><i class="fas fa-user"></i> {{ task_update.userTask}}</li>
-        <br />
-        <p class="text-justify">{{ task_update.description }}</p>
+        <div class="card">
+          <li>Estado: {{ task_update.state}}</li>
+          <li><i class="far fa-calendar-alt"></i> Creada el: {{ task_update.date | date}}</li>
+          <li *ngIf="task_update.endDate != null"><i class="far fa-calendar-alt"></i> Finalizada el: {{ task_update.endDate
+            | date}}</li>
+          <li><i class="fas fa-user"></i> {{ task_update.userTask}}</li>
+          <br />
+          <p class="text-justify">{{ task_update.description }}</p>
+        </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" data-dismiss="modal" id="closeModalShow">Cancelar</button>
         </div>
