@@ -50,6 +50,8 @@ export class UserTaskComponent implements OnInit {
         },
         error => this.handdleError(error)
       );
+    }else{
+      this.showSpinner = false;
     }
   }
 

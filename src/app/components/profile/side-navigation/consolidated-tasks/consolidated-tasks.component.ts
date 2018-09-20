@@ -58,6 +58,8 @@ export class ConsolidatedTasksComponent implements OnInit {
         },
         error => this.handdleError(error)
       );
+    }else{
+      this.showSpinner = false;
     }
   }
 
