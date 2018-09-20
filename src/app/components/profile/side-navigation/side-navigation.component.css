@@ -3,6 +3,7 @@
   padding: 0px;
 }
 #sidebar {
+  display: block;
   position: fixed;
   width: 200px;
   height: 100%;  
@@ -36,4 +37,22 @@
   font-size: 50px;
   display: block;
   text-align: center;
+}
+
+.mat-drawer-backdrop.mat-drawer-shown{  
+  visibility: visible;
+  left: 200px;
+  background-color: rgba(0,0,0,.6);
+  transition: all 0.30s linear;  
+}
+
+.mat-drawer-backdrop{
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  display: block;
+  z-index: 3;  
+  visibility: hidden;
 }

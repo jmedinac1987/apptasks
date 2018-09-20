@@ -15,5 +15,6 @@ export class SideNavigationComponent implements OnInit {
   showMenu(event: MouseEvent){
     event.preventDefault();    
     document.getElementById("sidebar").classList.toggle("active");
+    document.getElementById("mat-drawer").classList.toggle("mat-drawer-shown");
   }
 }
