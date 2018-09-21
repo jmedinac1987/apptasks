@@ -20,11 +20,10 @@ import { RequestResetComponent } from './components/password/request-reset/reque
 import { ResponseResetComponent } from './components/password/response-reset/response-reset.component';
 import { AppRoutingModule } from './app-routing.module';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { SideNavigationComponent } from './components/profile/side-navigation/side-navigation.component';
-import { UserTaskComponent } from './components/profile/side-navigation/user-task/user-task.component';
-import { ConsolidatedTasksComponent } from './components/profile/side-navigation/consolidated-tasks/consolidated-tasks.component';
+import { UserTaskComponent } from './components/profile/user-task/user-task.component';
+import { ConsolidatedTasksComponent } from './components/profile/consolidated-tasks/consolidated-tasks.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
-import { AboutComponent } from './components/profile/side-navigation/about/about.component';
+import { AboutComponent } from './components/profile/about/about.component';
 
 
 @NgModule({
@@ -36,8 +35,7 @@ import { AboutComponent } from './components/profile/side-navigation/about/about
     ProfileComponent,
     RequestResetComponent,
     ResponseResetComponent,
-    NotFoundComponent,
-    SideNavigationComponent,
+    NotFoundComponent,    
     UserTaskComponent,    
     ConsolidatedTasksComponent, 
     SpinnerComponent, 

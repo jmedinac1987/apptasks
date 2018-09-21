@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../../services/auth.service";
-import { UserService } from '../../services/user.service';
+import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 import { TokenService } from "../../services/token.service";
 import { SnotifyService } from "ng-snotify";
@@ -11,8 +11,18 @@ import { SnotifyService } from "ng-snotify";
   styleUrls: ["./navbar.component.css"]
 })
 export class NavbarComponent implements OnInit {
+  public menu: boolean = true;
+  public stylesClassMenu = {
+    "bg-dark": this.menu,
+    "active bg-dark": !this.menu
+  };
+  public stylesClassDrawer = {
+    "mat-drawer-backdrop": this.menu,
+    "mat-drawer-shown mat-drawer-backdrop": !this.menu
+  };
+
   public loggedIn: boolean;
-  public user_name ={ udn: null, email: null};
+  public user_name = { udn: null, email: null };
 
   constructor(
     private authService: AuthService,
@@ -27,14 +37,17 @@ export class NavbarComponent implements OnInit {
       this.loggedIn = value;
       if (this.tokenService.isValidToken())
         this.user_name = this.tokenService.getUser();
-    });        
+    });
   }
-  closeAcount(event: MouseEvent){
+  closeAcount(event: MouseEvent) {
     event.preventDefault();
     if (confirm("Realmente desea cerrar su cuenta?")) {
-      this.userService.closeAcount(this.user_name.email).subscribe(response =>{
-        this.serverResponse(response);        
-      }, error => this.handdleError(error));
+      this.userService.closeAcount(this.user_name.email).subscribe(
+        response => {
+          this.serverResponse(response);
+        },
+        error => this.handdleError(error)
+      );
     }
   }
 
@@ -46,10 +59,13 @@ export class NavbarComponent implements OnInit {
     this.hideMenu();
   }
 
-  showMenu(event: MouseEvent){
-    event.preventDefault();    
-    document.getElementById("sidebar").classList.toggle("active");
-    document.getElementById("mat-drawer").classList.toggle("mat-drawer-shown");
+  showMenu(event: MouseEvent) {
+    event.preventDefault();
+    this.menu = !this.menu;
+    this.stylesClassMenu["active bg-dark"] = !this.menu;
+    this.stylesClassMenu["bg-dark"] = this.menu;
+    this.stylesClassDrawer["mat-drawer-shown mat-drawer-backdrop"] = !this.menu;
+    this.stylesClassDrawer["mat-drawer-backdrop"] = this.menu;
   }
 
   logout(event: MouseEvent) {

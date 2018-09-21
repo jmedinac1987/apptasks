@@ -1,24 +1,83 @@
-#logo{  
-    color: #0be881;
-    font-family: 'Shrikhand', cursive;
-    cursor: pointer;
+#logo {
+  color: #0be881;
+  font-family: "Shrikhand", cursive;
+  cursor: pointer;
 }
 
-#logo_2{      
-    color: white;
-    font-family: 'Shrikhand', cursive;
-    cursor: pointer;
+#logo_2 {
+  color: white;
+  font-family: "Shrikhand", cursive;
+  cursor: pointer;
 }
-.userNav{
-    color: white;
+.userNav {
+  color: white;
 }
+
+#icon {
+  list-style: none;
+  padding: 15px 10px;
+  color: white;
+  font-size: 50px;
+  display: block;
+  text-align: center;
+}
+
 .toggle-btn span {
-    display: inline-block;    
-    width: 40px;    
-    text-align: center;
-    font-size: 20px;
-    color: white;
-    border: 1px solid #000;  
-    cursor: pointer;  
-  }
+  display: inline-block;
+  width: 40px;
+  text-align: center;
+  font-size: 20px;
+  color: white;
+  border: 1px solid #000;
+  cursor: pointer;
+}
 
+#sidebar {
+  position: fixed;
+  width: 200px;
+  height: 100%;
+  left: -200px;
+  top: 50px;
+  transition: all 0.3s linear;
+  word-wrap: break-word;
+}
+
+#sidebar.active {
+  left: 0px;
+}
+
+#sidebar ul li a {
+  color: rgba(230, 230, 230, 0.9);
+  list-style: none;
+  padding: 15px 10px;
+  border-bottom: 1px solid rgba(100, 100, 100, 0.3);
+  text-align: center;
+}
+
+#sidebar ul li {
+  list-style: none;
+}
+#sidebar ul {
+  margin-left: -40px;
+}
+#sidebar ul li a:hover {
+  background: #1e272e;
+}
+
+.mat-drawer-backdrop.mat-drawer-shown {
+  visibility: visible;  
+  right: 0;     
+  transition: all 0.3s linear 0.3s;    
+}
+
+.mat-drawer-backdrop {
+  top: 50px;
+  left: 200px; 
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  display: block;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.6);  
+  visibility: hidden;
+}

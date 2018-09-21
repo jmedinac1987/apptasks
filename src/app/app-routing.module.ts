@@ -9,7 +9,7 @@ import { ResponseResetComponent } from './components/password/response-reset/res
 import { BeforeLoginService } from './services/before-login.service';
 import { AfterLoginService } from './services/after-login.service';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { userRoutes } from './components/profile/side-navigation/user.routing';
+import { userRoutes } from './components/profile/user.routing';
 
 const appRoutes: Routes = [
   { path:'', redirectTo: '/login', pathMatch:'full'},
