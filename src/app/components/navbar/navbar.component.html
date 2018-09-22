@@ -1,7 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<!-- Navbar -->
+<nav [ngClass]="stylesClassNav.class">
     <div class="container">
         <div *ngIf="loggedIn" id="menuSideLeft" class="toggle-btn">
-            <span class="mr-3" (click)="showMenu($event)">
+            <span class="mr-3" (click)="showAndHiddenMenuSideBar($event)">
                 <i class="fas fa-bars"></i>
             </span>
         </div>
@@ -18,7 +19,7 @@
             <div class="navbar-nav ml-auto">
                 <ul class="navbar-nav">
                     <li routerLinkActive="active" class="nav-item" *ngIf="!loggedIn">
-                        <a class="nav-link" [routerLink]="['/login']" (click)="hideMenu()">LOGIN</a>
+                        <a class="nav-link" [routerLink]="['/login']" (click)="hideMenuNavBar">LOGIN</a>
                     </li>
                     <li class="nav-item dropdown" *ngIf="loggedIn">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -26,7 +27,7 @@
                             {{ user_name.udn | uppercase }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" [routerLink]="['/profile/task']" (click)="hideMenu()">Tareas Pendientes</a>
+                            <a class="dropdown-item" [routerLink]="['/profile/task']" (click)="hideMenuNavBar">Tareas Pendientes</a>
                             <a class="dropdown-item" href="#" (click)="logout($event)">Cerrar Sesión</a>
                             <a class="dropdown-item" href="#" (click)="closeAcount($event)">Cancelar Cuenta</a>
                         </div>
@@ -36,14 +37,16 @@
         </div>
     </div>
 </nav>
+
+<!-- Sidebar -->
 <div id="sidebar" [ngClass]="stylesClassMenu">
     <ul>
         <li>
             <i id="icon" class="fas fa-address-card"></i>
         </li>
-        <li><a class="nav-link" [routerLink]="['profile/task']" (click)="showMenu($event)">Tareas pendientes</a></li>
-        <li><a class="nav-link" [routerLink]="['profile/listTasks']" (click)="showMenu($event)">Consolidado de Tareas</a></li>
-        <li><a class="nav-link" [routerLink]="['profile/about']" (click)="showMenu($event)">Acerca de la aplicación</a></li>
+        <li><a class="nav-link" [routerLink]="['profile/task']" (click)="showAndHiddenMenuSideBar($event)">Tareas pendientes</a></li>
+        <li><a class="nav-link" [routerLink]="['profile/listTasks']" (click)="showAndHiddenMenuSideBar($event)">Consolidado de Tareas</a></li>
+        <li><a class="nav-link" [routerLink]="['profile/about']" (click)="showAndHiddenMenuSideBar($event)">Acerca de la aplicación</a></li>
     </ul>
 </div>
-<div [ngClass]="stylesClassDrawer" (click)="showMenu($event)"></div>
+<div [ngClass]="stylesClassDrawer" (click)="showAndHiddenMenuSideBar($event)"></div>

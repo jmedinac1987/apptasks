@@ -1,17 +1,24 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { AuthService } from "../../services/auth.service";
 import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 import { TokenService } from "../../services/token.service";
 import { SnotifyService } from "ng-snotify";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
   styleUrls: ["./navbar.component.css"]
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
+  public loggedIn: boolean;
   public menu: boolean = true;
+
+  public stylesClassNav = {
+    class: "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-top"
+  };
+
   public stylesClassMenu = {
     "bg-dark": this.menu,
     "active bg-dark": !this.menu
@@ -21,8 +28,12 @@ export class NavbarComponent implements OnInit {
     "mat-drawer-shown mat-drawer-backdrop": !this.menu
   };
 
-  public loggedIn: boolean;
-  public user_name = { udn: null, email: null };
+  subscription: Subscription;
+
+  public user_name = {
+    udn: null,
+    email: null
+  };
 
   constructor(
     private authService: AuthService,
@@ -33,12 +44,17 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.authStatus.subscribe(value => {
+   this.subscription = this.authService.authStatus.subscribe(value => {
       this.loggedIn = value;
       if (this.tokenService.isValidToken())
         this.user_name = this.tokenService.getUser();
     });
   }
+
+  ngOnDestroy(){
+    this.subscription.unsubscribe();
+  }
+
   closeAcount(event: MouseEvent) {
     event.preventDefault();
     if (confirm("Realmente desea cerrar su cuenta?")) {
@@ -56,16 +72,20 @@ export class NavbarComponent implements OnInit {
     this.tokenService.removeToken();
     this.authService.changeAuthStatus(false);
     this.router.navigate(["/login"]);
-    this.hideMenu();
+    this.hideMenuNavBar();
   }
 
-  showMenu(event: MouseEvent) {
+  showAndHiddenMenuSideBar(event: MouseEvent) {
     event.preventDefault();
     this.menu = !this.menu;
     this.stylesClassMenu["active bg-dark"] = !this.menu;
     this.stylesClassMenu["bg-dark"] = this.menu;
     this.stylesClassDrawer["mat-drawer-shown mat-drawer-backdrop"] = !this.menu;
     this.stylesClassDrawer["mat-drawer-backdrop"] = this.menu;
+    this.stylesClassNav.class = this.menu
+      ? "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-top"
+      : "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-Custom";
+    this.hideMenuNavBar();
   }
 
   logout(event: MouseEvent) {
@@ -73,10 +93,10 @@ export class NavbarComponent implements OnInit {
     this.tokenService.removeToken();
     this.authService.changeAuthStatus(false);
     this.router.navigate(["/login"]);
-    this.hideMenu();
+    this.hideMenuNavBar();
   }
 
-  hideMenu() {
+  hideMenuNavBar() {
     if (
       document.querySelectorAll("#navbarNav")[0].attributes[1].value ===
       "navbar-collapse collapse show"
