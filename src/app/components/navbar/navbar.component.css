@@ -30,30 +30,33 @@
 .mat-drawer-backdrop {
   background-color: rgba(0, 0, 0, 0.6);
   bottom: 0;
+  box-sizing: border-box;
   cursor: pointer;
   display: block;
-  left: 200px;
+  left: 0;
   position: fixed;
   right: 0;
-  top: 0;
-  z-index: 3;
-  visibility: hidden;
+  top: 0;      
+  visibility: hidden;  
+  z-index: 1;  
 }
 
-.mat-drawer-backdrop.mat-drawer-shown {
-  right: 0;
-  transition: all 0.2s linear 0.2s;
-  visibility: visible;
+.mat-drawer-backdrop.mat-drawer-shown {  
+  transition: all .3s linear;
+  visibility: visible;  
 }
 
 #sidebar {
+  box-sizing: border-box;
   height: 100%;
   left: -200px;
-  position: fixed;
+  overflow: auto;
+  position: fixed;  
   top: 0;
-  transition: all 0.2s linear;
+  transition: all .3s linear;
   width: 200px;
   word-wrap: break-word;
+  z-index: 2;
 }
 
 #sidebar.active {

@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav [ngClass]="stylesClassNav.class">
+<nav [ngClass]="stylesClassNavbarAndSidebar.class">
     <div class="container">
         <div *ngIf="loggedIn" id="menuSideLeft" class="toggle-btn">
             <span class="mr-3" (click)="showAndHiddenMenuSideBar($event)">
@@ -39,7 +39,7 @@
 </nav>
 
 <!-- Sidebar -->
-<div id="sidebar" [ngClass]="stylesClassMenu">
+<div id="sidebar" [ngClass]="stylesClassNavbarAndSidebar.classSidebar">
     <ul>
         <li>
             <i id="icon" class="fas fa-address-card"></i>
@@ -49,4 +49,4 @@
         <li><a class="nav-link" [routerLink]="['profile/about']" (click)="showAndHiddenMenuSideBar($event)">Acerca de la aplicación</a></li>
     </ul>
 </div>
-<div [ngClass]="stylesClassDrawer" (click)="showAndHiddenMenuSideBar($event)"></div>
+<div [ngClass]="stylesClassNavbarAndSidebar.classDrawer" (click)="showAndHiddenMenuSideBar($event)"></div>

@@ -4,7 +4,7 @@ import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 import { TokenService } from "../../services/token.service";
 import { SnotifyService } from "ng-snotify";
-import { Subscription } from 'rxjs';
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-navbar",
@@ -15,17 +15,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;
   public menu: boolean = true;
 
-  public stylesClassNav = {
-    class: "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-top"
-  };
-
-  public stylesClassMenu = {
-    "bg-dark": this.menu,
-    "active bg-dark": !this.menu
-  };
-  public stylesClassDrawer = {
-    "mat-drawer-backdrop": this.menu,
-    "mat-drawer-shown mat-drawer-backdrop": !this.menu
+  public stylesClassNavbarAndSidebar = {
+    class: "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-top",
+    classSidebar: "bg-dark",
+    classDrawer: "mat-drawer-backdrop"
   };
 
   subscription: Subscription;
@@ -44,14 +37,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-   this.subscription = this.authService.authStatus.subscribe(value => {
+    this.subscription = this.authService.authStatus.subscribe(value => {
       this.loggedIn = value;
       if (this.tokenService.isValidToken())
         this.user_name = this.tokenService.getUser();
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.subscription.unsubscribe();
   }
 
@@ -78,11 +71,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
   showAndHiddenMenuSideBar(event: MouseEvent) {
     event.preventDefault();
     this.menu = !this.menu;
-    this.stylesClassMenu["active bg-dark"] = !this.menu;
-    this.stylesClassMenu["bg-dark"] = this.menu;
-    this.stylesClassDrawer["mat-drawer-shown mat-drawer-backdrop"] = !this.menu;
-    this.stylesClassDrawer["mat-drawer-backdrop"] = this.menu;
-    this.stylesClassNav.class = this.menu
+    this.stylesClassNavbarAndSidebar.classSidebar = this.menu ? "bg-dark" : "active bg-dark";
+    this.stylesClassNavbarAndSidebar.classDrawer = this.menu
+      ? "mat-drawer-backdrop"
+      : "mat-drawer-shown mat-drawer-backdrop";
+
+    this.stylesClassNavbarAndSidebar.class = this.menu
       ? "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-top"
       : "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-Custom";
     this.hideMenuNavBar();
