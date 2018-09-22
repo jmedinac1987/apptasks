@@ -19,7 +19,7 @@
             <div class="navbar-nav ml-auto">
                 <ul class="navbar-nav">
                     <li routerLinkActive="active" class="nav-item" *ngIf="!loggedIn">
-                        <a class="nav-link" [routerLink]="['/login']" (click)="hideMenuNavBar">LOGIN</a>
+                        <a class="nav-link" [routerLink]="['/login']" (click)="hideMenuNavBar()">LOGIN</a>
                     </li>
                     <li class="nav-item dropdown" *ngIf="loggedIn">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -27,7 +27,7 @@
                             {{ user_name.udn | uppercase }}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" [routerLink]="['/profile/task']" (click)="hideMenuNavBar">Tareas Pendientes</a>
+                            <a class="dropdown-item" [routerLink]="['/profile/task']" (click)="hideMenuNavBar()">Tareas Pendientes</a>
                             <a class="dropdown-item" href="#" (click)="logout($event)">Cerrar Sesión</a>
                             <a class="dropdown-item" href="#" (click)="closeAcount($event)">Cancelar Cuenta</a>
                         </div>
