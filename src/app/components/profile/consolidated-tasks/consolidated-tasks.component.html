@@ -43,17 +43,20 @@
             <td>{{task.title | uppercase}}</td>
             <td>{{task.state | uppercase}}</td>
             <td>{{task.date | date}}</td>
-            <td>{{ task.endDate | date}}</td>
+            <td>
+              <div *ngIf="task.state !=='pendiente'">
+                {{ task.endDate | date}}
+              </div>
+            </td>
             <td>
               <div class="btn-group">
                 <a class="btn btn-primary btn-sm text-white" (click)="setTask(task)" data-toggle="modal" data-target="#modalShow">
                   <i class="fas fa-glasses"></i>
                 </a>
-                <a *ngIf="task.state != 'realizado'" class="btn btn-secondary btn-sm text-white" (click)="setTask(task)" data-toggle="modal"
-                  data-target="#modalEdit">
+                <a class="btn btn-secondary btn-sm text-white" (click)="setTask(task)" data-toggle="modal" data-target="#modalEdit">
                   <i class="fas fa-edit"></i>
                 </a>
-                <a *ngIf="task.state != 'realizado'" class="btn btn-danger btn-sm text-white" (click)="deleteTask(task)">
+                <a class="btn btn-danger btn-sm text-white" (click)="deleteTask(task)">
                   <i class="far fa-trash-alt"></i>
                 </a>
               </div>
@@ -93,17 +96,20 @@
           <td>{{task.title | uppercase}}</td>
           <td>{{task.state | uppercase}}</td>
           <td>{{task.date | date}}</td>
-          <td>{{ task.endDate | date}}</td>
+          <td>
+            <div *ngIf="task.state !== 'pendiente'">
+              {{ task.endDate | date}}
+            </div>
+          </td>
           <td>
             <div class="btn-group">
               <a class="btn btn-primary btn-sm text-white" (click)="setTask(task)" data-toggle="modal" data-target="#modalShow">
                 <i class="fas fa-glasses"></i>
               </a>
-              <a *ngIf="task.state != 'realizado'" class="btn btn-secondary btn-sm text-white" (click)="setTask(task)" data-toggle="modal"
-                data-target="#modalEdit">
+              <a class="btn btn-secondary btn-sm text-white" (click)="setTask(task)" data-toggle="modal" data-target="#modalEdit">
                 <i class="fas fa-edit"></i>
               </a>
-              <a *ngIf="task.state != 'realizado'" class="btn btn-danger btn-sm text-white" (click)="deleteTask(task)">
+              <a class="btn btn-danger btn-sm text-white" (click)="deleteTask(task)">
                 <i class="far fa-trash-alt"></i>
               </a>
             </div>
