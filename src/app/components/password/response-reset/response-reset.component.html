@@ -7,25 +7,25 @@
             </div>
             <div class="card-body">
                 <form  (ngSubmit)="onSubmit()"  #responseResetForm="ngForm">                    
-                    <div class="alert alert-danger" *ngIf="form.password != form.password_confirmation">
+                    <div class="alert alert-danger" *ngIf="user.password != user.confirmPassword">
                         Contraseñas no coinciden                              
                     </div>
                     <div class="form-group row">                        
                         <div class="col-sm-12">
                             <label for="email">Email</label>
-                            <input type="email" [(ngModel)]="form.email" name="email" class="form-control" id="email" placeholder="example@example.com" required>
+                            <input type="email" [(ngModel)]="user.email" name="email" class="form-control" id="email" placeholder="example@example.com" required>
                         </div>
                     </div>
                     <div class="form-group row">                        
                         <div class="col-sm-12">
                             <label for="password">Nueva Contraseña</label>
-                            <input type="password" minlength="8" [(ngModel)]="form.password"  name="password" class="form-control" id="email" placeholder="Nueva contraseña" required>
+                            <input type="password" minlength="8" [(ngModel)]="user.password"  name="password" class="form-control" id="email" placeholder="Nueva contraseña" required>
                         </div>
                     </div>
                     <div class="form-group row">                        
                         <div class="col-sm-12">
                             <label for="password_confirm">Confirmar contraseña</label>
-                            <input type="password" minlength="8" [(ngModel)]="form.password_confirmation"  name="password_confirmation" class="form-control" id="password_confirm" placeholder="Confirmar contraseña" required>
+                            <input type="password" minlength="8" [(ngModel)]="user.confirmPassword"  name="password_confirmation" class="form-control" id="password_confirm" placeholder="Confirmar contraseña" required>
                         </div>
                     </div>
                     <div class="form-group row">

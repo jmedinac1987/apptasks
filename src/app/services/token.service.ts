@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +11,7 @@ export class TokenService {
     signup: 'https://tasksapplication.herokuapp.com/api/signup'
   } 
 
-  public user= {
-    udn: null,
-    email: null
-  };
+  public user: User = new User();
 
   constructor() { }
 
@@ -34,7 +32,7 @@ export class TokenService {
   }
   
   setUser(payload){    
-    this.user.udn = payload.udn;        
+    this.user.displayName = payload.udn;        
     this.user.email = payload.sub;        
   }
 

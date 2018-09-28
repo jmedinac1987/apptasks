@@ -5,35 +5,35 @@
 			Crear Tarea <i class="fas fa-tasks"></i>
 		</button>
 	</div>
-	<div class="pt-5 mt-5">
+	<div class="pt-5">
 		<div *ngIf="!length_tasks && !showSpinner" class="pt-3 text-center">
-			<h2>No tienes tareas pendientes :)</h2>
+			<h2>No tienes tareas pendientes <i class="far fa-smile-wink"></i></h2>
 		</div>
 	</div>
-	<div *ngIf="length_tasks && !showSpinner" class="pt-3">
+	<div *ngIf="length_tasks && !showSpinner">
 		<!-- paginación -->
-		<pagination-controls (pageChange)="p = $event"></pagination-controls>
+		<pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
 	</div>
 	<app-spinner *ngIf="showSpinner"></app-spinner>
-	<div *ngIf="length_tasks && !showSpinner" class="card-deck pt-3 pb-5">
-		<div class="col-md-4 pb-3 colPosition" *ngFor="let task of tasks | paginate: { itemsPerPage: 6, currentPage: p }">
+	<div *ngIf="length_tasks && !showSpinner" class="card-deck">
+		<div class="col-md-4 pb-3 colPosition" *ngFor="let task of tasks | paginate: { itemsPerPage: 6, currentPage: currentPage }">
 			<div class="card colPosition">
 				<div class="card-header">
 					{{ task.title | uppercase}}
 				</div>
 				<div class="card-body">
-					<li>Estado: {{ task.state}}</li>
-					<li><i class="far fa-calendar-alt"></i> Creada el: {{ task.date | date}}</li>
-					<li><i class="fas fa-user"></i> {{ task.userTask}}</li>
+					<li class="listStyle"><i class="fas fa-user"></i> {{ task.userTask}}</li>
+					<li class="listStyle"><i class="far fa-calendar-alt"></i> Creada el: {{ task.date | date}}</li>
+					<li class="listStyle"><i class="far fa-laugh-wink"></i> Estado: {{ task.state}}</li>
 					<br />
 					<p class="text-justify">{{ task.description }}</p>
 				</div>
 				<div class="card-footer">
-					<div class="btn-group colPosition">
-						<button class="btn btn-danger btn-sm colPosition" (click)="deleteTask(task)">
+					<div class="btn-group">
+						<button class="btn btn-danger btn-sm" (click)="deleteTask(task)">
 							<i class="far fa-trash-alt"></i>
 						</button>
-						<button class="btn btn-secondary btn-sm colPosition" (click)="setTask(task)" data-toggle="modal" data-target="#modalEdit">
+						<button class="btn btn-secondary btn-sm" (click)="setTask(task)" data-toggle="modal" data-target="#modalEdit">
 							<i class="fas fa-edit"></i>
 						</button>
 					</div>
@@ -41,9 +41,9 @@
 			</div>
 		</div>
 	</div>
-	<div *ngIf="length_tasks && !showSpinner" class="pt-3">
+	<div *ngIf="length_tasks && !showSpinner">
 		<!-- paginación -->
-		<pagination-controls (pageChange)="p = $event"></pagination-controls>
+		<pagination-controls (pageChange)="currentPage = $event"></pagination-controls>
 	</div>
 </div>
 

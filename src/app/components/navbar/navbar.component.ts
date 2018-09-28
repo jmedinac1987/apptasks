@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { TokenService } from "../../services/token.service";
 import { SnotifyService } from "ng-snotify";
 import { Subscription } from "rxjs";
+import { User } from "../../models/user";
 
 @Component({
   selector: "app-navbar",
@@ -14,18 +15,13 @@ import { Subscription } from "rxjs";
 export class NavbarComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;
   public menu: boolean = true;
+  public subscription: Subscription;
+  public user: User = new User();
 
   public stylesClassNavbarAndSidebar = {
-    class: "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-top",
+    class: "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-Custom",
     classSidebar: "bg-dark",
     classDrawer: "mat-drawer-backdrop"
-  };
-
-  subscription: Subscription;
-
-  public user_name = {
-    udn: null,
-    email: null
   };
 
   constructor(
@@ -40,7 +36,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.subscription = this.authService.authStatus.subscribe(value => {
       this.loggedIn = value;
       if (this.tokenService.isValidToken())
-        this.user_name = this.tokenService.getUser();
+        this.user = this.tokenService.getUser();
     });
   }
 
@@ -51,7 +47,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   closeAcount(event: MouseEvent) {
     event.preventDefault();
     if (confirm("Realmente desea cerrar su cuenta?")) {
-      this.userService.closeAcount(this.user_name.email).subscribe(
+      this.userService.closeAcount(this.user.email).subscribe(
         response => {
           this.serverResponse(response);
         },
@@ -71,23 +67,24 @@ export class NavbarComponent implements OnInit, OnDestroy {
   showAndHiddenMenuSideBar(event: MouseEvent) {
     event.preventDefault();
     this.menu = !this.menu;
-    this.stylesClassNavbarAndSidebar.classSidebar = this.menu ? "bg-dark" : "active bg-dark";
+    this.stylesClassNavbarAndSidebar.classSidebar = this.menu
+      ? "bg-dark"
+      : "active bg-dark";
     this.stylesClassNavbarAndSidebar.classDrawer = this.menu
       ? "mat-drawer-backdrop"
       : "mat-drawer-shown mat-drawer-backdrop";
 
-    this.stylesClassNavbarAndSidebar.class = this.menu
-      ? "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-top"
-      : "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-Custom";
     this.hideMenuNavBar();
   }
 
   logout(event: MouseEvent) {
     event.preventDefault();
-    this.tokenService.removeToken();
-    this.authService.changeAuthStatus(false);
-    this.router.navigate(["/login"]);
-    this.hideMenuNavBar();
+    if (confirm("Desea cerrar su sesión?")) {
+      this.tokenService.removeToken();
+      this.authService.changeAuthStatus(false);
+      this.router.navigate(["/login"]);
+      this.hideMenuNavBar();
+    }
   }
 
   hideMenuNavBar() {

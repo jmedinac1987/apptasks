@@ -5,7 +5,13 @@ import { SnotifyService } from "ng-snotify";
 import { AuthService } from "../../../services/auth.service";
 import { Router } from "@angular/router";
 import { TokenService } from "../../../services/token.service";
-import { Subscription } from 'rxjs';
+import { Subscription } from "rxjs";
+
+export class SearchTask {
+  search: string;
+  argument: string;
+  constructor() {}
+}
 
 @Component({
   selector: "app-consolidated-tasks",
@@ -13,21 +19,20 @@ import { Subscription } from 'rxjs';
   styleUrls: ["./consolidated-tasks.component.css"]
 })
 export class ConsolidatedTasksComponent implements OnInit, OnDestroy {
-  subscription: Subscription;
-  showSpinner: boolean = true;
-  tasks: Task[];
-  task_update: Task = new Task();
-  length_tasks: boolean = true;
-  number_tasks: number;
-  number_search: number;
-  p: number = 1;
-  pageSearch: number = 1;
-  filter: Task[];
-  show: boolean = false;
-  searchTask = {
-    search: null,
-    argument: null
-  };
+  public subscription: Subscription;
+  public subscriptionDelete: Subscription;
+  public subscriptionUpdate: Subscription;
+  public showSpinner: boolean = true;
+  public tasks: Task[];
+  public task_update: Task = new Task();
+  public length_tasks: boolean = true;
+  public number_tasks: number;
+  public number_search: number;
+  public currentPage: number = 1;
+  public pageSearch: number = 1;
+  public filter: Task[];
+  public show: boolean = false;
+  public searchTask: SearchTask = new SearchTask();
 
   constructor(
     private taskService: TaskService,
@@ -45,15 +50,17 @@ export class ConsolidatedTasksComponent implements OnInit, OnDestroy {
       error => this.handdleError(error)
     );
   }
-  ngOnDestroy(){
-    this.subscription.unsubscribe();
+  ngOnDestroy() {
+    if (this.subscription) this.subscription.unsubscribe();
+    if (this.subscriptionDelete) this.subscriptionDelete.unsubscribe();
+    if (this.subscriptionUpdate) this.subscriptionUpdate.unsubscribe();
   }
 
-  deleteTask(task) {
+  deleteTask(task: Task) {
     this.showSpinner = true;
     if (confirm("Esta seguro de eliminar la tarea?")) {
       const id = task._id;
-      this.taskService.deleteTask(task._id).subscribe(
+      this.subscriptionDelete = this.taskService.deleteTask(task).subscribe(
         data => {
           this.serverResponse(data);
           this.tasks = this.deleteItemTasks(this.tasks, id);
@@ -63,7 +70,7 @@ export class ConsolidatedTasksComponent implements OnInit, OnDestroy {
         },
         error => this.handdleError(error)
       );
-    }else{
+    } else {
       this.showSpinner = false;
     }
   }
@@ -72,28 +79,27 @@ export class ConsolidatedTasksComponent implements OnInit, OnDestroy {
     return array.filter(e => e._id !== elem);
   }
 
-  filterTask(search) {
-    if (search.argument === "title") {
+  filterTask() {
+    let searchTask = this.searchTask;
+    if (this.searchTask.argument === "title") {
       this.filter = this.tasks.filter(function(task) {
         return (
-          task.title.toLowerCase().indexOf(search.search.toLowerCase()) > -1
+          task.title.toLowerCase().indexOf(searchTask.search.toLowerCase()) > -1
         );
       });
-      this.searchTask.search = null;
-      this.searchTask.argument = null;
+      this.searchTask = new SearchTask();
       this.show = true;
       this.number_search = this.filter.length;
       return this.filter;
     }
 
-    if (search.argument === "state") {
+    if (this.searchTask.argument === "state") {
       this.filter = this.tasks.filter(function(task) {
         return (
-          task.state.toLowerCase().indexOf(search.search.toLowerCase()) > -1
+          task.state.toLowerCase().indexOf(searchTask.search.toLowerCase()) > -1
         );
       });
-      this.searchTask.search = null;
-      this.searchTask.argument = null;
+      this.searchTask = new SearchTask();
       this.show = true;
       this.number_search = this.filter.length;
       return this.filter;
@@ -134,19 +140,18 @@ export class ConsolidatedTasksComponent implements OnInit, OnDestroy {
     this.task_update = task;
   }
 
-  onSubmit() {
-    this.filterTask(this.searchTask);
-  }
-
   onSubmitUpdate() {
     let closeModal = document.getElementById("closeModalEdit");
     closeModal.click();
     this.showSpinner = true;
 
-    if (this.task_update.state === "realizado")
-      this.task_update.endDate = Date.now().toString();
+    if (this.task_update.endDate && this.task_update.state === "pendiente")
+      this.task_update.endDate = null;
 
-    this.taskService.putTask(this.task_update).subscribe(
+    if (this.task_update.state === "realizado")
+      this.task_update.endDate = Date.now();
+
+    this.subscriptionUpdate = this.taskService.putTask(this.task_update).subscribe(
       data => {
         this.serverResponse(data);
         this.ngOnInit();

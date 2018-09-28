@@ -6,42 +6,46 @@
                 <h5>Crear una cuenta</h5>
             </div>
             <div class="card-body">
-                <div class="alert alert-danger" *ngIf="form.password != form.password_confirmation">
+                <div class="alert alert-danger" *ngIf="user.password != user.confirmPassword">
                     Contraseñas no coinciden
                 </div>
                 <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
                     <div class="form-group row">
                         <div class="col-sm-12">
                             <label for="displayName">Nombre</label>
-                            <input type="text" minlength="3" maxlength="30" [(ngModel)]="form.displayName" name="displayName" class="form-control" id="displayName"
+                            <input type="text" minlength="3" maxlength="30" [(ngModel)]="user.displayName" name="displayName" class="form-control" id="displayName"
                                 placeholder="Ingrese su nombre" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-12">
                             <label for="email">Email</label>
-                            <input type="email" [(ngModel)]="form.email" name="email" class="form-control" id="email" placeholder="example@example.com"
+                            <input type="email" [(ngModel)]="user.email" name="email" class="form-control" id="email" placeholder="example@example.com"
                                 required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-12">
                             <label for="password">Contraseña</label>
-                            <input type="password" minlength="8" [(ngModel)]="form.password" name="password" class="form-control" id="password" placeholder="contraseña"
+                            <input type="password" minlength="8" [(ngModel)]="user.password" name="password" class="form-control" id="password" placeholder="contraseña"
                                 required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-12">
                             <label for="password_confirm">Confirmar contraseña</label>
-                            <input type="password" minlength="8" [(ngModel)]="form.password_confirmation" name="password_confirmation" class="form-control"
+                            <input type="password" minlength="8" [(ngModel)]="user.confirmPassword" name="password_confirmation" class="form-control"
                                 id="password_confirm" placeholder="confirmar contraseña" required>
                         </div>
                     </div>
+                    <small>
+                        Usa 8 o más caracteres con una combinación de letras, números y símbolos
+                    </small>
                     <div class="form-group row">
                         <div class="col-sm-12">
                             <button type="submit" [disabled]="!signupForm.valid" class="btn btn-block btn-primary">Crear
-                                cuenta</button>
+                                cuenta
+                            </button>
                             <small>
                                 <a [routerLink]="['/login']" class="nav-link float-right">Prefiero iniciar sesión</a>
                             </small>

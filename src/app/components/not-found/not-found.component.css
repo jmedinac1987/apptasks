@@ -1,8 +1,11 @@
-.centerNotFound{
-    padding: 15%;
-    text-align: center;
+.centerNotFound {
+  padding-top: 15%;
+  text-align: center;
 }
 
-.centerNotFound a{
-    font-size: 2em;
+@media (max-width: 667px) {
+  .centerNotFound {
+    padding-top: 30%;
+    text-align: center;
+  }
 }

@@ -3,7 +3,7 @@
   display: block;
   font-size: 50px;
   list-style: none;
-  padding-top: 80px;
+  padding-top: 60px;
   padding-bottom: 10px;
   text-align: center;
 }
@@ -13,6 +13,7 @@
   position: fixed;
   right: 0;
   top: 0;
+  z-index: 1;
 }
 
 #logo {
@@ -27,6 +28,13 @@
   font-family: "Shrikhand", cursive;
 }
 
+li h3 {
+  color: white;
+  cursor: default;      
+  padding-top: 15px;  
+  text-align: center;
+}
+
 .mat-drawer-backdrop {
   background-color: rgba(0, 0, 0, 0.6);
   bottom: 0;
@@ -36,14 +44,14 @@
   left: 0;
   position: fixed;
   right: 0;
-  top: 0;      
-  visibility: hidden;  
-  z-index: 1;  
+  top: 0;
+  visibility: hidden;
+  z-index: 1;
 }
 
-.mat-drawer-backdrop.mat-drawer-shown {  
-  transition: all .3s linear;
-  visibility: visible;  
+.mat-drawer-backdrop.mat-drawer-shown {
+  transition: all 0.3s linear;
+  visibility: visible;
 }
 
 #sidebar {
@@ -51,9 +59,9 @@
   height: 100%;
   left: -200px;
   overflow: auto;
-  position: fixed;  
+  position: fixed;
   top: 0;
-  transition: all .3s linear;
+  transition: all 0.3s linear;
   width: 200px;
   word-wrap: break-word;
   z-index: 2;
@@ -94,4 +102,8 @@
 
 .userNav {
   color: white;
+}
+
+.trick{
+  display: inline-block
 }
