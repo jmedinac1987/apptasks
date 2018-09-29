@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   public stylesClassNavbarAndSidebar = {
     class: "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-Custom",
-    classSidebar: "bg-dark",
+    classSidebar: "sidebar bg-light",
     classDrawer: "mat-drawer-backdrop"
   };
 
@@ -68,8 +68,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     event.preventDefault();
     this.menu = !this.menu;
     this.stylesClassNavbarAndSidebar.classSidebar = this.menu
-      ? "bg-dark"
-      : "active bg-dark";
+      ? "sidebar bg-light"
+      : "active sidebar bg-light";
     this.stylesClassNavbarAndSidebar.classDrawer = this.menu
       ? "mat-drawer-backdrop"
       : "mat-drawer-shown mat-drawer-backdrop";

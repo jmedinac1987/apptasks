@@ -19,7 +19,7 @@
             <div class="navbar-nav ml-auto">
                 <ul class="navbar-nav">
                     <li routerLinkActive="active" class="nav-item" *ngIf="!loggedIn">
-                        <a class="nav-link" [routerLink]="['/login']" (click)="hideMenuNavBar()">LOGIN</a>
+                        <a class="nav-link float-right" [routerLink]="['/login']" (click)="hideMenuNavBar()">LOGIN</a>
                     </li>
                     <li class="nav-item dropdown" *ngIf="loggedIn">
                         <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
@@ -40,10 +40,10 @@
 </nav>
 
 <!-- Sidebar -->
-<div id="sidebar" [ngClass]="stylesClassNavbarAndSidebar.classSidebar">
+<div [ngClass]="stylesClassNavbarAndSidebar.classSidebar">
     <ul>
-        <li>
-            <h3><strong> MENU</strong></h3>
+        <li class="bg-dark">
+            <h3><strong> Menu</strong></h3>
         </li>
         <li>
             <i id="icon" class="fas fa-address-card"></i>
