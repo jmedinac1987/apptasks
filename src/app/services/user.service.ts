@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenService } from './token.service';
+import { User } from '../models/user';
 
 
 @Injectable({
@@ -17,24 +18,24 @@ export class UserService {
     this.server = 'https://tasksapplication.herokuapp.com/api';
   }
 
-  loginService(form)
+  loginService(user: User)
   {
-    return this._http.post(`${this.server}/signin`, form);
+    return this._http.post(`${this.server}/signin`, user);
   }
 
-  signupService(form)
+  signupService(user: User)
   {
-    return this._http.post(`${this.server}/signup`, form);
+    return this._http.post(`${this.server}/signup`, user);
   }
 
-  sendPasswordReset(form)
+  sendPasswordReset(user: User)
   {
-    return this._http.post(`${this.server}/reset-password`, form);
+    return this._http.post(`${this.server}/reset-password`, user);
   }
 
-  changePassword(form)
+  changePassword(user: User)
   {
-    return this._http.post(`${this.server}/change-password`, form);
+    return this._http.post(`${this.server}/change-password`, user);
   }
 
   getHeaders(){

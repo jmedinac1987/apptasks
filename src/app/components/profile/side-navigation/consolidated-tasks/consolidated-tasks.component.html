@@ -1,14 +1,16 @@
 <div class="pt-5">
   <div class="pt-5 mt-5">
     <div *ngIf="!length_tasks" class="pt-3 text-center">
-      <h2>No tienes tareas registradas :)</h2>
+      <h2>No tienes tareas registradas <i class="far fa-smile-wink"></i></h2>
     </div>
     <app-spinner *ngIf="showSpinner"></app-spinner>
     <div *ngIf="length_tasks && !show && !showSpinner" class="pt-3">
-      <p class="lead text-muted">Tienes {{ number_tasks }} tarea(s) registrada(s) </p>
+      <p class="lead text-muted">Tienes {{ number_tasks }} tarea(s) registrada(s)</p>
       <!-- Search.. -->
-      <form class="form-inline my-2 my-lg-0 pb-3" (ngSubmit)="onSubmit()" #searchForm="ngForm">
-        <input [(ngModel)]="searchTask.search" name="search" class="form-control mr-sm-2" type="text" placeholder="Buscar.." required>
+      <form class="form-inline my-2 my-lg-0 pb-3" (ngSubmit)="filterTask()" #searchForm="ngForm">
+        <input [(ngModel)]="searchTask.search" name="search" class="form-control mr-sm-2" type="text" placeholder="Buscar.." required
+        title="Ingrese la información y después seleccione si es por título o por estado"
+        >
         <div class="form-check form-check-inline colPosition">
           <input [(ngModel)]="searchTask.argument" class="form-check-input" type="radio" name="inlineRadioOptions" id="title" value="title"
             required>
@@ -24,7 +26,11 @@
         </div>
       </form>
       <!-- paginación -->
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      <pagination-controls (pageChange)="p = $event"
+      responsive="true"
+      previousLabel = "Anterior"
+		  nextLabel = "Siguiente"
+      ></pagination-controls>
     </div>
     <!-- Tabla de registros -->
     <div *ngIf="length_tasks && !show && !showSpinner" class="table-responsive">
@@ -43,17 +49,20 @@
             <td>{{task.title | uppercase}}</td>
             <td>{{task.state | uppercase}}</td>
             <td>{{task.date | date}}</td>
-            <td>{{ task.endDate | date}}</td>
+            <td>
+              <div *ngIf="task.state !=='pendiente'">
+                {{ task.endDate | date}}
+              </div>
+            </td>
             <td>
               <div class="btn-group">
                 <a class="btn btn-primary btn-sm text-white" (click)="setTask(task)" data-toggle="modal" data-target="#modalShow">
                   <i class="fas fa-glasses"></i>
                 </a>
-                <a *ngIf="task.state != 'realizado'" class="btn btn-secondary btn-sm text-white" (click)="setTask(task)" data-toggle="modal"
-                  data-target="#modalEdit">
+                <a class="btn btn-secondary btn-sm text-white" (click)="setTask(task)" data-toggle="modal" data-target="#modalEdit">
                   <i class="fas fa-edit"></i>
                 </a>
-                <a *ngIf="task.state != 'realizado'" class="btn btn-danger btn-sm text-white" (click)="deleteTask(task)">
+                <a class="btn btn-danger btn-sm text-white" (click)="deleteTask(task)">
                   <i class="far fa-trash-alt"></i>
                 </a>
               </div>
@@ -64,7 +73,11 @@
     </div>
     <div *ngIf="length_tasks && !show && !showSpinner" class="pt-3">
       <!-- paginación -->
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      <pagination-controls (pageChange)="p = $event"
+      responsive="true"
+      previousLabel = "Anterior"
+		  nextLabel = "Siguiente"
+      ></pagination-controls>
     </div>
   </div>
 </div>
@@ -72,10 +85,14 @@
 <!--Tabla registros de la busqueda-->
 <div *ngIf="show && !showSpinner">
   <div *ngIf="length_tasks" class="pt-3">
-    <p class="lead text-muted">{{ number_search }} Registros encontrados </p>
+    <p class="lead text-muted">{{ number_search }} Registros encontrados <i *ngIf="number_search <= 0" class="far fa-frown"></i></p>
     <!-- paginación -->
     <button class="btn btn-primary mb-3" (click)="showAllRegisters()">Mostrar todos los registros</button>
-    <pagination-controls id="search" (pageChange)="pageSearch = $event"></pagination-controls>
+    <pagination-controls id="search" (pageChange)="pageSearch = $event"
+      responsive="true"
+      previousLabel = "Anterior"
+		  nextLabel = "Siguiente"
+    ></pagination-controls>
   </div>
   <div class="table-responsive">
     <table class="table table-sm table-hover table-bordered text-center">
@@ -93,17 +110,20 @@
           <td>{{task.title | uppercase}}</td>
           <td>{{task.state | uppercase}}</td>
           <td>{{task.date | date}}</td>
-          <td>{{ task.endDate | date}}</td>
+          <td>
+            <div *ngIf="task.state !== 'pendiente'">
+              {{ task.endDate | date}}
+            </div>
+          </td>
           <td>
             <div class="btn-group">
               <a class="btn btn-primary btn-sm text-white" (click)="setTask(task)" data-toggle="modal" data-target="#modalShow">
                 <i class="fas fa-glasses"></i>
               </a>
-              <a *ngIf="task.state != 'realizado'" class="btn btn-secondary btn-sm text-white" (click)="setTask(task)" data-toggle="modal"
-                data-target="#modalEdit">
+              <a class="btn btn-secondary btn-sm text-white" (click)="setTask(task)" data-toggle="modal" data-target="#modalEdit">
                 <i class="fas fa-edit"></i>
               </a>
-              <a *ngIf="task.state != 'realizado'" class="btn btn-danger btn-sm text-white" (click)="deleteTask(task)">
+              <a class="btn btn-danger btn-sm text-white" (click)="deleteTask(task)">
                 <i class="far fa-trash-alt"></i>
               </a>
             </div>
@@ -182,11 +202,11 @@
       </div>
       <div class="modal-body">
         <div class="card">
-          <li>Estado: {{ task_update.state}}</li>
-          <li><i class="far fa-calendar-alt"></i> Creada el: {{ task_update.date | date}}</li>
-          <li *ngIf="task_update.endDate != null"><i class="far fa-calendar-alt"></i> Finalizada el: {{ task_update.endDate
+          <li class="listStyle"><i class="far fa-laugh-wink"></i> Estado: {{ task_update.state}}</li>
+          <li class="listStyle"><i class="far fa-calendar-alt"></i> Creada el: {{ task_update.date | date}}</li>
+          <li class="listStyle" *ngIf="task_update.endDate != null"><i class="far fa-calendar-alt"></i> Finalizada el: {{ task_update.endDate
             | date}}</li>
-          <li><i class="fas fa-user"></i> {{ task_update.userTask}}</li>
+          <li class="listStyle"><i class="fas fa-user"></i> {{ task_update.userTask}}</li>
           <br />
           <p class="text-justify">{{ task_update.description }}</p>
         </div>

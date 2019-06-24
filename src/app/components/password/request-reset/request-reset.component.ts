@@ -1,36 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { SnotifyService } from 'ng-snotify';
-
-
+import { User } from "../../../models/user";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-request-reset',
   templateUrl: './request-reset.component.html',
   styleUrls: ['./request-reset.component.css']
 })
-export class RequestResetComponent implements OnInit {
-  showSpinner: boolean;
-
-  public form = {
-    email: null
-  } 
+export class RequestResetComponent implements OnInit, OnDestroy {
   
+  public subscription: Subscription;
+  public showSpinner: boolean;
+  public user: User = new User();
   public error = null;
 
   constructor(
-    private userService: UserService, private notify: SnotifyService
+    private userService: UserService, 
+    private notify: SnotifyService
   )
   { }
 
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    if (this.subscription) this.subscription.unsubscribe();
+  }
+
   onSubmit()
   { 
-    this.showSpinner = true;
-    this.notify.info('Procesando la solicitud...', {timeout: 1000});    
-    this.userService.sendPasswordReset(this.form).subscribe(
+    this.showSpinner = true;       
+    this.subscription = this.userService.sendPasswordReset(this.user).subscribe(
       data => this.handleResponse(data),              
       error => this.handleError(error));
   }
@@ -45,14 +47,12 @@ export class RequestResetComponent implements OnInit {
     }
   }
   
-  
-
   handleResponse(response)
   { 
     this.showSpinner = false;
     this.error = null;
     this.notify.success(response.message, {timeout:0});        
-    this.form.email = null;
+    this.user.email = null;
   }
 
 

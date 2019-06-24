@@ -1,11 +1,12 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+<!-- Navbar -->
+<nav [ngClass]="stylesClassNavbarAndSidebar.class">
     <div class="container">
         <div *ngIf="loggedIn" id="menuSideLeft" class="toggle-btn">
-            <span  class="mr-3"  (click)="showMenu($event)">
-                <i class="fas fa-bars"></i>
+            <span class="mr-3" (click)="showAndHiddenMenuSideBar($event)">
+                <i class="fas fa-bars" title="Despliega las opciones disponibles"></i>
             </span>
         </div>
-        <a class="navbar-brand">
+        <a class="navbar-brand" title="Aplicación para registro de tareas">
             <span id="logo">App</span>
             <span id="logo_2">Tasks</span>
         </a>
@@ -18,15 +19,16 @@
             <div class="navbar-nav ml-auto">
                 <ul class="navbar-nav">
                     <li routerLinkActive="active" class="nav-item" *ngIf="!loggedIn">
-                        <a class="nav-link" [routerLink]="['/login']" (click)="hideMenu()">LOGIN</a>
+                        <a class="nav-link float-right" [routerLink]="['/login']" (click)="hideMenuNavBar()">LOGIN</a>
                     </li>
                     <li class="nav-item dropdown" *ngIf="loggedIn">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false">
-                            {{ user_name.udn | uppercase }}
+                            <span class="float-right dropdown-toggle">{{ user.displayName | uppercase }}</span>
+                            <div class="trick"></div>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" [routerLink]="['/profile/task']" (click)="hideMenu()">Tareas Pendientes</a>
+                            <a class="dropdown-item" [routerLink]="['/profile/task']" (click)="hideMenuNavBar()">Tareas Pendientes</a>
                             <a class="dropdown-item" href="#" (click)="logout($event)">Cerrar Sesión</a>
                             <a class="dropdown-item" href="#" (click)="closeAcount($event)">Cancelar Cuenta</a>
                         </div>
@@ -36,3 +38,19 @@
         </div>
     </div>
 </nav>
+
+<!-- Sidebar -->
+<div [ngClass]="stylesClassNavbarAndSidebar.classSidebar">
+    <ul>
+        <li class="bg-dark">
+            <h3><strong> Menú</strong></h3>
+        </li>
+        <li>
+            <i id="icon" class="fas fa-address-card"></i>
+        </li>
+        <li><a class="nav-link" [routerLink]="['profile/task']" (click)="showAndHiddenMenuSideBar($event)">Tareas pendientes</a></li>
+        <li><a class="nav-link" [routerLink]="['profile/listTasks']" (click)="showAndHiddenMenuSideBar($event)">Consolidado de Tareas</a></li>
+        <li><a class="nav-link" [routerLink]="['profile/about']" (click)="showAndHiddenMenuSideBar($event)">Acerca de la aplicación</a></li>
+    </ul>
+</div>
+<div [ngClass]="stylesClassNavbarAndSidebar.classDrawer" (click)="showAndHiddenMenuSideBar($event)"></div>

@@ -1,18 +1,28 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { AuthService } from "../../services/auth.service";
-import { UserService } from '../../services/user.service';
+import { UserService } from "../../services/user.service";
 import { Router } from "@angular/router";
 import { TokenService } from "../../services/token.service";
 import { SnotifyService } from "ng-snotify";
+import { Subscription } from "rxjs";
+import { User } from "../../models/user";
 
 @Component({
   selector: "app-navbar",
   templateUrl: "./navbar.component.html",
   styleUrls: ["./navbar.component.css"]
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   public loggedIn: boolean;
-  public user_name ={ udn: null, email: null};
+  public menu: boolean = true;
+  public subscription: Subscription;
+  public user: User = new User();
+
+  public stylesClassNavbarAndSidebar = {
+    class: "navbar navbar-expand-lg navbar-dark bg-dark navbar fixed-Custom",
+    classSidebar: "sidebar bg-light",
+    classDrawer: "mat-drawer-backdrop"
+  };
 
   constructor(
     private authService: AuthService,
@@ -23,18 +33,26 @@ export class NavbarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.authStatus.subscribe(value => {
+    this.subscription = this.authService.authStatus.subscribe(value => {
       this.loggedIn = value;
       if (this.tokenService.isValidToken())
-        this.user_name = this.tokenService.getUser();
-    });        
+        this.user = this.tokenService.getUser();
+    });
   }
-  closeAcount(event: MouseEvent){
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  closeAcount(event: MouseEvent) {
     event.preventDefault();
     if (confirm("Realmente desea cerrar su cuenta?")) {
-      this.userService.closeAcount(this.user_name.email).subscribe(response =>{
-        this.serverResponse(response);        
-      }, error => this.handdleError(error));
+      this.userService.closeAcount(this.user.email).subscribe(
+        response => {
+          this.serverResponse(response);
+        },
+        error => this.handdleError(error)
+      );
     }
   }
 
@@ -43,23 +61,33 @@ export class NavbarComponent implements OnInit {
     this.tokenService.removeToken();
     this.authService.changeAuthStatus(false);
     this.router.navigate(["/login"]);
-    this.hideMenu();
+    this.hideMenuNavBar();
   }
 
-  showMenu(event: MouseEvent){
-    event.preventDefault();    
-    document.getElementById("sidebar").classList.toggle("active");
+  showAndHiddenMenuSideBar(event: MouseEvent) {
+    event.preventDefault();
+    this.menu = !this.menu;
+    this.stylesClassNavbarAndSidebar.classSidebar = this.menu
+      ? "sidebar bg-light"
+      : "active sidebar bg-light";
+    this.stylesClassNavbarAndSidebar.classDrawer = this.menu
+      ? "mat-drawer-backdrop"
+      : "mat-drawer-shown mat-drawer-backdrop";
+
+    this.hideMenuNavBar();
   }
 
   logout(event: MouseEvent) {
     event.preventDefault();
-    this.tokenService.removeToken();
-    this.authService.changeAuthStatus(false);
-    this.router.navigate(["/login"]);
-    this.hideMenu();
+    if (confirm("Desea cerrar su sesión?")) {
+      this.tokenService.removeToken();
+      this.authService.changeAuthStatus(false);
+      this.router.navigate(["/login"]);
+      this.hideMenuNavBar();
+    }
   }
 
-  hideMenu() {
+  hideMenuNavBar() {
     if (
       document.querySelectorAll("#navbarNav")[0].attributes[1].value ===
       "navbar-collapse collapse show"

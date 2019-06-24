@@ -1,33 +1,29 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
 import { UserService } from "../../services/user.service";
 import { TokenService } from "../../services/token.service";
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
 import { SnotifyService } from "ng-snotify";
+import { User } from "../../models/user";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-signup",
   templateUrl: "./signup.component.html",
   styleUrls: ["./signup.component.css"]
 })
-export class SignupComponent implements OnInit {
-  showSpinner: boolean;
-
+export class SignupComponent implements OnInit, OnDestroy {
+  
+  public subscription: Subscription;
+  public user: User = new User();
+  public showSpinner: boolean;
+  public error = null;
   private list_white_server_email: String[] = [
     "gmail",
     "hotmail",
     "yahoo",
     "outlook"
   ];
-
-  public form = {
-    email: null,
-    displayName: null,
-    password: null,
-    password_confirmation: null
-  };
-
-  public error = [];
 
   constructor(
     private userService: UserService,
@@ -38,12 +34,16 @@ export class SignupComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
+  
+  ngOnDestroy() {
+    if (this.subscription) this.subscription.unsubscribe();
+  }
 
   onSubmit() {
     this.showSpinner = true;
-    if (this.validateEmail(this.form.email)) {
-      this.userService
-        .signupService(this.form)
+    if (this.validateEmail(this.user.email)) {
+      this.subscription = this.userService
+        .signupService(this.user)
         .subscribe(
           data => this.handleResponse(data),
           error => this.handleError(error)
@@ -71,7 +71,7 @@ export class SignupComponent implements OnInit {
 
   handleResponse(data) {
     this.showSpinner = false;
-    this.error = [];
+    this.error = null;
     this.tokenService.handle(data.token);
     this.authService.changeAuthStatus(true);
     this.router.navigate(["/profile/task"]);
