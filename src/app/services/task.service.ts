@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { TokenService } from './token.service';
 import { Task } from '../models/task' ;
-//import { Observable } from '../../../node_modules/rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -32,15 +31,15 @@ export class TaskService {
     return this._http.get<Task[]>(`${this.server}/tasks/pending`, this.getHeaders());
   }
 
-  putTask(task){    
+  putTask(task: Task){    
     return this._http.put(`${this.server}/tasks/${task._id}`, task ,this.getHeaders());
   }
 
-  deleteTask(id_task){
-    return this._http.delete(`${this.server}/tasks/${id_task}`,this.getHeaders());
+  deleteTask(task: Task){
+    return this._http.delete(`${this.server}/tasks/${task._id}`,this.getHeaders());
   }
   
-  postTask(task)
+  postTask(task: Task)
   {
     return this._http.post(`${this.server}/tasks`, task, this.getHeaders());
   }

@@ -1,24 +1,29 @@
-import { Component, OnInit } from "@angular/core";
-import { TaskService } from "../../../../services/task.service";
-import { Task } from "../../../../models/task";
-import { AuthService } from "../../../../services/auth.service";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { TaskService } from "../../../services/task.service";
+import { Task } from "../../../models/task";
+import { AuthService } from "../../../services/auth.service";
 import { Router } from "@angular/router";
-import { TokenService } from "../../../../services/token.service";
+import { TokenService } from "../../../services/token.service";
 import { SnotifyService } from "ng-snotify";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-user-task",
   templateUrl: "./user-task.component.html",
   styleUrls: ["./user-task.component.css"]
 })
-export class UserTaskComponent implements OnInit {
-  showSpinner: boolean = true;
-  tasks: Task[];
-  task: Task = new Task();
-  task_update: Task = new Task();
-  length_tasks: boolean = true;
-  number_tasks: number;
-  p: number = 1; //para la paginación
+export class UserTaskComponent implements OnInit, OnDestroy {
+  public subscription: Subscription;
+  public subscriptionAdd: Subscription;
+  public subscriptionUpdate: Subscription;
+  public subscriptionDelete: Subscription;
+  public showSpinner: boolean = true;
+  public tasks: Task[];
+  public task: Task = new Task();
+  public task_update: Task = new Task();
+  public length_tasks: boolean = true;
+  public number_tasks: number;
+  public currentPage: number = 1;
 
   constructor(
     private taskService: TaskService,
@@ -28,8 +33,8 @@ export class UserTaskComponent implements OnInit {
     private notify: SnotifyService
   ) {}
 
-  ngOnInit() {     
-    this.taskService
+  ngOnInit() {
+    this.subscription = this.taskService
       .getTasksPending()
       .subscribe(
         data => this.handdleResponse(data),
@@ -37,23 +42,31 @@ export class UserTaskComponent implements OnInit {
       );
   }
 
-  deleteTask(task) {
+  ngOnDestroy() {
+    if (this.subscription) this.subscription.unsubscribe();
+    if (this.subscriptionAdd) this.subscriptionAdd.unsubscribe();
+    if (this.subscriptionDelete) this.subscriptionDelete.unsubscribe();
+    if (this.subscriptionUpdate) this.subscriptionUpdate.unsubscribe();
+  }
+
+  deleteTask(task: Task) {
     this.showSpinner = true;
     if (confirm("Esta seguro de eliminar la tarea?")) {
       const id = task._id;
-      this.taskService.deleteTask(task._id).subscribe(
+      this.subscriptionDelete = this.taskService.deleteTask(task).subscribe(
         data => {
           this.tasks = this.deleteItemTasks(this.tasks, id);
           this.number_tasks = this.tasks.length;
           this.serverResponse(data);
-          
         },
         error => this.handdleError(error)
       );
+    } else {
+      this.showSpinner = false;
     }
   }
 
-  deleteItemTasks(array, elem) {    
+  deleteItemTasks(array, elem) {
     return array.filter(e => e._id !== elem);
   }
 
@@ -92,11 +105,10 @@ export class UserTaskComponent implements OnInit {
     closeModal.click();
     this.showSpinner = true;
 
-    if (this.task.state === "realizado")
-      this.task.endDate = Date.now().toString();
-      
-    this.taskService.postTask(this.task).subscribe(
-      data => {        
+    if (this.task.state === "realizado") this.task.endDate = Date.now();
+
+    this.subscriptionAdd = this.taskService.postTask(this.task).subscribe(
+      data => {
         this.serverResponse(data);
         this.ngOnInit();
       },
@@ -104,18 +116,19 @@ export class UserTaskComponent implements OnInit {
     );
   }
 
-  onSubmitUpdate() {   
-    
+  onSubmitUpdate() {
     let closeModal = document.getElementById("closeModalEdit");
-    closeModal.click();     
+    closeModal.click();
     this.showSpinner = true;
 
-    if (this.task_update.state === "realizado")
-      this.task_update.endDate = Date.now().toString();
+    if (this.task_update.endDate && this.task_update.state === "pendiente")
+      this.task_update.endDate = null;
 
-    this.taskService.putTask(this.task_update).subscribe(
-      data => {        
-        
+    if (this.task_update.state === "realizado")
+      this.task_update.endDate = Date.now();
+
+    this.subscriptionUpdate = this.taskService.putTask(this.task_update).subscribe(
+      data => {
         this.serverResponse(data);
         this.ngOnInit();
       },

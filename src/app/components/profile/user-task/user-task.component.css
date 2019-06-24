@@ -1,0 +1,16 @@
+.colPosition {
+  position: inherit;
+  border-radius: 10px;
+}
+
+.card:hover {
+  box-shadow: 0 15px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  margin-top: -3px;
+  margin-bottom: 3px;
+  transition: all 0.15s cubic-bezier(0.33, 0.66, 0.66, 1);
+}
+
+.listStyle {
+  list-style: none;
+}
